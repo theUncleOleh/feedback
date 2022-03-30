@@ -1,5 +1,7 @@
 import React from 'react';
+import Controls from './Controls';
 import s from './Feedback.module.css';
+import Statistics from './Statistics';
 
 class Feedback extends React.Component {
   state = {
@@ -9,35 +11,49 @@ class Feedback extends React.Component {
   };
 
   handleGoodClick = () => {
-    console.log('click in good');
+    this.setState(prevState => {
+      return { good: prevState.good + 1 };
+    });
   };
 
   handleNeutralClick = () => {
-    console.log('click in neutral');
+    this.setState(prevState => {
+      return { neutral: prevState.neutral + 1 };
+    });
   };
 
   handleBadClick = () => {
-    console.log('click in bad');
+    this.setState(prevState => {
+      return { bad: prevState.bad + 1 };
+    });
+  };
+
+  countTotalFeedback = () => {
+    return this.state.good + this.state.neutral + this.state.bad;
+  };
+
+  countPositiveFeedbackPercentage = () => {
+    return Math.round(
+      (this.state.good * 100) / (this.state.good + this.state.neutral)
+    );
   };
 
   render() {
     return (
       <section className={s.section}>
         <h2 className={s.title}>Please leave feedback</h2>
-        <button className={s.button} onClick={this.handleGoodClick}>
-          Good
-        </button>
-        <button className={s.button} onClick={this.handleNeutralClick}>
-          Neutral
-        </button>
-        <button className={s.button} onClick={this.handleBadClick}>
-          Bad
-        </button>
-        <ul>
-          <li>Good</li>
-          <li>Neutral</li>
-          <li>Bad</li>
-        </ul>
+        <Controls
+          onGood={this.handleGoodClick}
+          onNeutral={this.handleNeutralClick}
+          onBad={this.handleBadClick}
+        />
+        <Statistics
+          good={this.state.good}
+          neutral={this.state.neutral}
+          bad={this.state.bad}
+          total={this.countTotalFeedback()}
+          percentage={this.countPositiveFeedbackPercentage()}
+        />
       </section>
     );
   }
