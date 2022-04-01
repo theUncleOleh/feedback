@@ -1,18 +1,18 @@
 import React from 'react';
 import s from './Controls.module.css';
 
-const Controls = ({ onGood, onNeutral, onBad }) => {
+const Controls = ({ options, onLeaveFeedback }) => {
   return (
     <div className={s.container}>
-      <button className={s.button} onClick={onGood}>
-        Good
-      </button>
-      <button className={s.button} onClick={onNeutral}>
-        Neutral
-      </button>
-      <button className={s.button} onClick={onBad}>
-        Bad
-      </button>
+      {options.map(option => (
+        <button
+          className={s.button}
+          key={option}
+          onClick={() => onLeaveFeedback(option)}
+        >
+          {option}
+        </button>
+      ))}
     </div>
   );
 };
